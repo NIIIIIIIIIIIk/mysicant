@@ -2,7 +2,7 @@
   <div class="admin-page">
     <div class="admin-header">
       <h1><i class="bi bi-shield-lock"></i> Админ-панель</h1>
-      <p>Управление магазином музыкальных инструментов</p>
+      <p>Управление интернет-магазином музыкальных инструментов</p>
     </div>
 
     <div class="admin-container">
@@ -78,7 +78,11 @@
         <div v-if="activeSection === 'products'" class="products-manager">
           <div class="section-header">
             <h2>Управление товарами</h2>
-            <button class="btn-add" @click="openProductModal()"><i class="bi bi-plus-lg"></i> Добавить</button>
+            <!-- СТИЛИЗОВАННАЯ КНОПКА ДОБАВЛЕНИЯ ТОВАРА -->
+            <button class="btn-add-product" @click="openProductModal()">
+              <i class="bi bi-plus-lg"></i>
+              <span>Добавить товар</span>
+            </button>
           </div>
           <table class="admin-table">
             <thead>
@@ -185,21 +189,31 @@
     <!-- Модальное окно товара -->
     <div v-if="productModalOpen" class="modal-overlay" @click.self="productModalOpen = false">
       <div class="modal-content">
-        <div class="modal-header"><h3>{{ editingProduct ? 'Редактировать' : 'Добавить товар' }}</h3><button class="modal-close" @click="productModalOpen = false">×</button></div>
+        <div class="modal-header">
+          <h3>{{ editingProduct ? 'Редактировать товар' : 'Добавить товар' }}</h3>
+          <button class="modal-close" @click="productModalOpen = false">×</button>
+        </div>
         <div class="modal-body">
           <div class="form-group"><label>Название</label><input type="text" v-model="productForm.name"></div>
           <div class="form-group"><label>Бренд</label><input type="text" v-model="productForm.brand"></div>
           <div class="form-group"><label>Цена</label><input type="number" v-model="productForm.price"></div>
           <div class="form-group"><label>URL фото</label><input type="text" v-model="productForm.image"></div>
+          <div class="form-group"><label>Описание</label><textarea v-model="productForm.description" rows="3"></textarea></div>
         </div>
-        <div class="modal-footer"><button class="btn-cancel" @click="productModalOpen = false">Отмена</button><button class="btn-save" @click="saveProduct">Сохранить</button></div>
+        <div class="modal-footer">
+          <button class="btn-cancel" @click="productModalOpen = false">Отмена</button>
+          <button class="btn-save" @click="saveProduct">Сохранить</button>
+        </div>
       </div>
     </div>
 
     <!-- Модальное окно деталей заказа -->
     <div v-if="orderModalOpen" class="modal-overlay" @click.self="orderModalOpen = false">
       <div class="modal-content">
-        <div class="modal-header"><h3>Детали заказа #{{ selectedOrder?.number }}</h3><button class="modal-close" @click="orderModalOpen = false">×</button></div>
+        <div class="modal-header">
+          <h3>Детали заказа #{{ selectedOrder?.number }}</h3>
+          <button class="modal-close" @click="orderModalOpen = false">×</button>
+        </div>
         <div class="modal-body">
           <p><strong>Клиент:</strong> {{ selectedOrder?.customer }}</p>
           <p><strong>Адрес:</strong> {{ selectedOrder?.address || 'Не указан' }}</p>
@@ -218,6 +232,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
 import { products as productsData } from '../data/products'
+import { showNotification } from '../utils/notifications'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -288,16 +303,24 @@ const getUserWishlistCount = (userId) => users.value.find(u => u.id === userId)?
 
 const updateUserRole = (id, role) => {
   const user = users.value.find(u => u.id === id)
-  if (user) { user.role = role; alert(`Роль пользователя ${user.name} изменена`) }
+  if (user) { 
+    user.role = role
+    showNotification(`Роль пользователя ${user.name} изменена`, 'success')
+  }
 }
-const deleteUser = (id) => { if (confirm('Удалить пользователя?')) users.value = users.value.filter(u => u.id !== id) }
+const deleteUser = (id) => { 
+  if (confirm('Удалить пользователя?')) {
+    users.value = users.value.filter(u => u.id !== id)
+    showNotification('Пользователь удалён', 'success')
+  }
+}
 
 const updateOrderStatus = (id, status) => {
   const order = orders.value.find(o => o.id === id)
   if (order) {
     order.status = status
     order.statusText = status === 'new' ? 'Новый' : status === 'processing' ? 'В обработке' : status === 'delivered' ? 'Доставлен' : 'Отменён'
-    alert('Статус обновлён!')
+    showNotification(`Статус заказа #${order.number} обновлён`, 'success')
   }
 }
 const viewOrder = (order) => { selectedOrder.value = order; orderModalOpen.value = true }
@@ -307,25 +330,31 @@ const productModalOpen = ref(false)
 const orderModalOpen = ref(false)
 const editingProduct = ref(null)
 const selectedOrder = ref(null)
-const productForm = ref({ name: '', brand: '', price: 0, image: '' })
+const productForm = ref({ name: '', brand: '', price: 0, image: '', description: '' })
 
 const openProductModal = (product = null) => {
   editingProduct.value = product
   if (product) productForm.value = { ...product }
-  else productForm.value = { name: '', brand: '', price: 0, image: '' }
+  else productForm.value = { name: '', brand: '', price: 0, image: '', description: '' }
   productModalOpen.value = true
 }
 const saveProduct = () => {
   if (editingProduct.value) {
     const index = products.value.findIndex(p => p.id === editingProduct.value.id)
     products.value[index] = { ...productForm.value, id: editingProduct.value.id }
+    showNotification('Товар обновлён', 'success')
   } else {
     products.value.push({ ...productForm.value, id: Date.now(), rating: 0, reviews: 0 })
+    showNotification('Товар добавлен', 'success')
   }
   productModalOpen.value = false
-  alert('Товар сохранён!')
 }
-const deleteProduct = (id) => { if (confirm('Удалить товар?')) products.value = products.value.filter(p => p.id !== id) }
+const deleteProduct = (id) => { 
+  if (confirm('Удалить товар?')) {
+    products.value = products.value.filter(p => p.id !== id)
+    showNotification('Товар удалён', 'success')
+  }
+}
 </script>
 
 <style scoped>
@@ -444,6 +473,52 @@ const deleteProduct = (id) => { if (confirm('Удалить товар?')) produ
   font-size: 1.5rem;
 }
 
+/* ===== СТИЛИЗОВАННАЯ КНОПКА ДОБАВЛЕНИЯ ТОВАРА ===== */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.section-header h2 {
+  color: white;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.btn-add-product {
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
+  border: none;
+  border-radius: 40px;
+  padding: 12px 28px;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 15px rgba(255, 51, 102, 0.3);
+}
+
+.btn-add-product:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+  background: linear-gradient(135deg, #ff4477, #ff7b4d);
+}
+
+.btn-add-product:active {
+  transform: translateY(1px);
+}
+
+.btn-add-product i {
+  font-size: 1.2rem;
+}
+
 /* Таблицы */
 .admin-table {
   width: 100%;
@@ -464,6 +539,13 @@ const deleteProduct = (id) => { if (confirm('Удалить товар?')) produ
   background: rgba(255, 51, 102, 0.1);
   color: white;
   font-weight: 600;
+}
+
+.product-thumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 8px;
 }
 
 /* Кнопки действий */
@@ -505,7 +587,7 @@ const deleteProduct = (id) => { if (confirm('Удалить товар?')) produ
   width: 250px;
 }
 
-/* Карточки пользователей */
+/* Пользователи */
 .users-stats {
   display: flex;
   gap: 20px;
@@ -671,7 +753,7 @@ const deleteProduct = (id) => { if (confirm('Удалить товар?')) produ
   color: var(--text-secondary);
 }
 
-.form-group input {
+.form-group input, .form-group textarea {
   width: 100%;
   padding: 10px;
   background: var(--bg-elevated);
@@ -723,6 +805,16 @@ const deleteProduct = (id) => { if (confirm('Удалить товар?')) produ
   
   .stats-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .btn-add-product {
+    width: 100%;
+    justify-content: center;
   }
 }
 </style>
