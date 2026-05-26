@@ -3,9 +3,25 @@
     <!-- Hero секция -->
     <section class="hero">
       <div class="hero-content">
-        <h1 class="hero-title">Music Store</h1>
-        <p class="hero-subtitle">Магазин музыкальных инструментов</p>
+        <h1 class="hero-title">Интернет-магазин<br>музыкальных инструментов</h1>
+        <p class="hero-subtitle">Лучшие инструменты от ведущих мировых брендов</p>
         <router-link to="/catalog" class="btn-hero">Перейти в каталог</router-link>
+      </div>
+    </section>
+
+    <!-- Категории -->
+    <section class="categories">
+      <div class="container">
+        <h2 class="section-title">Категории</h2>
+        <div class="categories-grid">
+          <div v-for="cat in categories" :key="cat.id" class="category-card" @click="goToCategory(cat.slug)">
+            <img :src="cat.image" :alt="cat.name">
+            <div class="category-info">
+              <h3>{{ cat.name }}</h3>
+              <p>{{ cat.count }} товаров</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -35,14 +51,13 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useCartStore } from '../stores/cart'
 import { products } from '../data/products'
+import { showNotification } from '../utils/notifications'
 
 const router = useRouter()
 const cartStore = useCartStore()
 
-// Хиты продаж - берём первые 4 товара из каталога
 const featuredProducts = ref(products.slice(0, 4))
 
-// Категории с фотографиями
 const categories = ref([
   { id: 1, name: 'Гитары', slug: 'guitar', count: 24, image: 'https://images.unsplash.com/photo-1525201548942-d8732f6617a0?w=400' },
   { id: 2, name: 'Клавишные', slug: 'piano', count: 18, image: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=400' },
@@ -56,7 +71,7 @@ const formatPrice = (price) => {
 
 const addToCart = (product) => {
   cartStore.addItem(product)
-  alert(`✅ ${product.name} добавлен в корзину!`)
+  showNotification('Товар добавлен в корзину', 'success')
 }
 
 const goToCategory = (slug) => {
@@ -65,30 +80,34 @@ const goToCategory = (slug) => {
 </script>
 
 <style scoped>
+.home {
+  background: var(--bg-primary);
+}
+
 .hero {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a1a2e, #16213e);
   padding: 80px 20px;
   text-align: center;
 }
 
 .hero-title {
-  font-size: 3rem;
+  font-size: 2.5rem;
   color: white;
   margin-bottom: 16px;
 }
 
 .hero-subtitle {
-  font-size: 1.2rem;
-  color: rgba(255,255,255,0.8);
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 24px;
 }
 
 .btn-hero {
   display: inline-block;
   padding: 12px 30px;
-  background: white;
-  color: #667eea;
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
   border-radius: 30px;
+  color: white;
   text-decoration: none;
   font-weight: 600;
 }
@@ -123,11 +142,6 @@ const goToCategory = (slug) => {
   width: 100%;
   height: 200px;
   object-fit: cover;
-  transition: transform 0.3s;
-}
-
-.category-card:hover img {
-  transform: scale(1.05);
 }
 
 .category-info {
@@ -168,7 +182,7 @@ const goToCategory = (slug) => {
 }
 
 .price {
-  color: var(--accent-primary);
+  color: #ff3366;
   font-weight: 700;
   margin-bottom: 12px;
 }
@@ -176,7 +190,7 @@ const goToCategory = (slug) => {
 .add-to-cart {
   width: 100%;
   padding: 10px;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
   border: none;
   border-radius: 8px;
   color: white;
@@ -184,6 +198,10 @@ const goToCategory = (slug) => {
 }
 
 @media (max-width: 768px) {
+  .hero-title {
+    font-size: 1.8rem;
+  }
+  
   .categories-grid, .products-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
