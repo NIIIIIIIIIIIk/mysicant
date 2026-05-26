@@ -12,10 +12,10 @@
           </div>
           <div class="info-logo">
             <i class="bi bi-music-note-beamed"></i>
-            <span>Music Store</span>
+            <span>Регистрация</span>
           </div>
-          <h2>Присоединяйтесь!</h2>
-          <p>Создайте аккаунт и получите доступ к эксклюзивным предложениям</p>
+          <h2>Создайте аккаунт</h2>
+          <p>Присоединяйтесь к музыкальному сообществу</p>
           <div class="stats">
             <div class="stat"><span class="stat-number">500+</span><span class="stat-label">инструментов</span></div>
             <div class="stat"><span class="stat-number">10 000+</span><span class="stat-label">клиентов</span></div>
@@ -36,20 +36,20 @@
             <div class="col-6">
               <div class="input-group">
                 <div class="input-icon"><i class="bi bi-person"></i></div>
-                <input type="text" v-model="firstName" placeholder="Имя" required :class="{ 'error': firstNameError }">
+                <input type="text" v-model="firstName" placeholder="Имя" required>
               </div>
             </div>
             <div class="col-6">
               <div class="input-group">
                 <div class="input-icon"><i class="bi bi-person"></i></div>
-                <input type="text" v-model="lastName" placeholder="Фамилия" required :class="{ 'error': lastNameError }">
+                <input type="text" v-model="lastName" placeholder="Фамилия" required>
               </div>
             </div>
           </div>
 
           <div class="input-group">
             <div class="input-icon"><i class="bi bi-envelope"></i></div>
-            <input type="email" v-model="email" placeholder="Email" required :class="{ 'error': emailError }">
+            <input type="email" v-model="email" placeholder="Email" required>
           </div>
 
           <div class="input-group">
@@ -59,7 +59,7 @@
 
           <div class="input-group">
             <div class="input-icon"><i class="bi bi-lock"></i></div>
-            <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Пароль" required :class="{ 'error': passwordError }">
+            <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Пароль" required>
             <button type="button" class="password-toggle" @click="showPassword = !showPassword">
               <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
@@ -67,7 +67,7 @@
 
           <div class="input-group">
             <div class="input-icon"><i class="bi bi-lock-fill"></i></div>
-            <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Подтвердите пароль" required :class="{ 'error': confirmError }">
+            <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Подтвердите пароль" required>
             <button type="button" class="password-toggle" @click="showConfirmPassword = !showConfirmPassword">
               <i :class="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
@@ -79,7 +79,7 @@
           </div>
 
           <div class="form-options">
-            <label class="checkbox"><input type="checkbox" v-model="agreeTerms" required><span>Я согласен с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></span></label>
+            <label class="checkbox"><input type="checkbox" v-model="agreeTerms" required><span>Я согласен с <a href="#">условиями использования</a></span></label>
           </div>
 
           <button type="submit" class="btn-submit" :disabled="loading">
@@ -120,12 +120,6 @@ const showConfirmPassword = ref(false)
 const agreeTerms = ref(false)
 const loading = ref(false)
 
-const firstNameError = computed(() => firstName.value && firstName.value.length < 2)
-const lastNameError = computed(() => lastName.value && lastName.value.length < 2)
-const emailError = computed(() => email.value && !email.value.includes('@'))
-const passwordError = computed(() => password.value && password.value.length < 6)
-const confirmError = computed(() => confirmPassword.value && confirmPassword.value !== password.value)
-
 const passwordStrength = computed(() => {
   if (!password.value) return 0
   let strength = 0
@@ -154,8 +148,29 @@ const strengthColor = computed(() => {
 })
 
 const handleRegister = async () => {
-  if (!firstName.value || !lastName.value || !email.value || !password.value) {
-    showNotification('Пожалуйста, заполните все обязательные поля', 'warning')
+  // Проверка на пустые поля
+  if (!firstName.value || firstName.value.trim() === '') {
+    showNotification('Введите имя', 'warning')
+    return
+  }
+  
+  if (!lastName.value || lastName.value.trim() === '') {
+    showNotification('Введите фамилию', 'warning')
+    return
+  }
+  
+  if (!email.value || email.value.trim() === '') {
+    showNotification('Введите email', 'warning')
+    return
+  }
+  
+  if (!password.value || password.value.trim() === '') {
+    showNotification('Введите пароль', 'warning')
+    return
+  }
+  
+  if (!confirmPassword.value || confirmPassword.value.trim() === '') {
+    showNotification('Подтвердите пароль', 'warning')
     return
   }
   
@@ -386,11 +401,6 @@ const socialRegister = (provider) => {
   outline: none;
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.1);
-}
-
-.input-group input.error {
-  border-color: #ff4444;
-  background: rgba(255, 68, 68, 0.05);
 }
 
 .password-toggle {
