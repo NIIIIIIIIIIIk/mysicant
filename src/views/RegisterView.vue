@@ -17,18 +17,9 @@
           <h2>Присоединяйтесь!</h2>
           <p>Создайте аккаунт и получите доступ к эксклюзивным предложениям</p>
           <div class="stats">
-            <div class="stat">
-              <span class="stat-number">500+</span>
-              <span class="stat-label">инструментов</span>
-            </div>
-            <div class="stat">
-              <span class="stat-number">10 000+</span>
-              <span class="stat-label">клиентов</span>
-            </div>
-            <div class="stat">
-              <span class="stat-number">5 лет</span>
-              <span class="stat-label">гарантии</span>
-            </div>
+            <div class="stat"><span class="stat-number">500+</span><span class="stat-label">инструментов</span></div>
+            <div class="stat"><span class="stat-number">10 000+</span><span class="stat-label">клиентов</span></div>
+            <div class="stat"><span class="stat-number">5 лет</span><span class="stat-label">гарантии</span></div>
           </div>
         </div>
       </div>
@@ -44,102 +35,51 @@
           <div class="row">
             <div class="col-6">
               <div class="input-group">
-                <div class="input-icon">
-                  <i class="bi bi-person"></i>
-                </div>
-                <input 
-                  type="text" 
-                  v-model="firstName" 
-                  placeholder="Имя" 
-                  required
-                  :class="{ 'error': firstNameError }"
-                >
+                <div class="input-icon"><i class="bi bi-person"></i></div>
+                <input type="text" v-model="firstName" placeholder="Имя" required :class="{ 'error': firstNameError }">
               </div>
             </div>
             <div class="col-6">
               <div class="input-group">
-                <div class="input-icon">
-                  <i class="bi bi-person"></i>
-                </div>
-                <input 
-                  type="text" 
-                  v-model="lastName" 
-                  placeholder="Фамилия" 
-                  required
-                  :class="{ 'error': lastNameError }"
-                >
+                <div class="input-icon"><i class="bi bi-person"></i></div>
+                <input type="text" v-model="lastName" placeholder="Фамилия" required :class="{ 'error': lastNameError }">
               </div>
             </div>
           </div>
 
           <div class="input-group">
-            <div class="input-icon">
-              <i class="bi bi-envelope"></i>
-            </div>
-            <input 
-              type="email" 
-              v-model="email" 
-              placeholder="Email" 
-              required
-              :class="{ 'error': emailError }"
-            >
+            <div class="input-icon"><i class="bi bi-envelope"></i></div>
+            <input type="email" v-model="email" placeholder="Email" required :class="{ 'error': emailError }">
           </div>
 
           <div class="input-group">
-            <div class="input-icon">
-              <i class="bi bi-telephone"></i>
-            </div>
-            <input 
-              type="tel" 
-              v-model="phone" 
-              placeholder="Телефон (необязательно)"
-            >
+            <div class="input-icon"><i class="bi bi-telephone"></i></div>
+            <input type="tel" v-model="phone" placeholder="Телефон (необязательно)">
           </div>
 
           <div class="input-group">
-            <div class="input-icon">
-              <i class="bi bi-lock"></i>
-            </div>
-            <input 
-              :type="showPassword ? 'text' : 'password'" 
-              v-model="password" 
-              placeholder="Пароль" 
-              required
-              :class="{ 'error': passwordError }"
-            >
+            <div class="input-icon"><i class="bi bi-lock"></i></div>
+            <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Пароль" required :class="{ 'error': passwordError }">
             <button type="button" class="password-toggle" @click="showPassword = !showPassword">
               <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
           </div>
 
           <div class="input-group">
-            <div class="input-icon">
-              <i class="bi bi-lock-fill"></i>
-            </div>
-            <input 
-              :type="showConfirmPassword ? 'text' : 'password'" 
-              v-model="confirmPassword" 
-              placeholder="Подтвердите пароль" 
-              required
-              :class="{ 'error': confirmError }"
-            >
+            <div class="input-icon"><i class="bi bi-lock-fill"></i></div>
+            <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword" placeholder="Подтвердите пароль" required :class="{ 'error': confirmError }">
             <button type="button" class="password-toggle" @click="showConfirmPassword = !showConfirmPassword">
               <i :class="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
           </div>
 
           <div class="password-strength" v-if="password">
-            <div class="strength-bar">
-              <div class="strength-fill" :style="{ width: passwordStrength + '%', background: strengthColor }"></div>
-            </div>
+            <div class="strength-bar"><div class="strength-fill" :style="{ width: passwordStrength + '%', background: strengthColor }"></div></div>
             <span class="strength-text">{{ strengthText }}</span>
           </div>
 
           <div class="form-options">
-            <label class="checkbox">
-              <input type="checkbox" v-model="agreeTerms" required>
-              <span>Я согласен с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></span>
-            </label>
+            <label class="checkbox"><input type="checkbox" v-model="agreeTerms" required><span>Я согласен с <a href="#">условиями использования</a> и <a href="#">политикой конфиденциальности</a></span></label>
           </div>
 
           <button type="submit" class="btn-submit" :disabled="loading">
@@ -147,20 +87,12 @@
             <span v-else><i class="bi bi-person-plus"></i> Зарегистрироваться</span>
           </button>
 
-          <div class="divider">
-            <span>или зарегистрируйтесь через</span>
-          </div>
+          <div class="divider"><span>или зарегистрируйтесь через</span></div>
 
           <div class="social-buttons">
-            <button type="button" class="social-btn google" @click="socialRegister('google')">
-              <i class="bi bi-google"></i> Google
-            </button>
-            <button type="button" class="social-btn vk" @click="socialRegister('vk')">
-              <i class="bi bi-vk"></i> VK
-            </button>
-            <button type="button" class="social-btn github" @click="socialRegister('github')">
-              <i class="bi bi-github"></i> GitHub
-            </button>
+            <button type="button" class="social-btn google" @click="socialRegister('google')"><i class="bi bi-google"></i> Google</button>
+            <button type="button" class="social-btn vk" @click="socialRegister('vk')"><i class="bi bi-vk"></i> VK</button>
+            <button type="button" class="social-btn github" @click="socialRegister('github')"><i class="bi bi-github"></i> GitHub</button>
           </div>
         </form>
       </div>
@@ -188,14 +120,12 @@ const showConfirmPassword = ref(false)
 const agreeTerms = ref(false)
 const loading = ref(false)
 
-// Ошибки валидации
 const firstNameError = computed(() => firstName.value && firstName.value.length < 2)
 const lastNameError = computed(() => lastName.value && lastName.value.length < 2)
 const emailError = computed(() => email.value && !email.value.includes('@'))
 const passwordError = computed(() => password.value && password.value.length < 6)
 const confirmError = computed(() => confirmPassword.value && confirmPassword.value !== password.value)
 
-// Индикатор сложности пароля
 const passwordStrength = computed(() => {
   if (!password.value) return 0
   let strength = 0
@@ -224,9 +154,8 @@ const strengthColor = computed(() => {
 })
 
 const handleRegister = async () => {
-  // Валидация полей
   if (!firstName.value || !lastName.value || !email.value || !password.value) {
-    showNotification('Заполните все обязательные поля', 'warning')
+    showNotification('Пожалуйста, заполните все обязательные поля', 'warning')
     return
   }
   
@@ -264,15 +193,11 @@ const handleRegister = async () => {
 }
 
 const socialRegister = (provider) => {
-  showNotification(`🔐 Регистрация через ${provider} будет доступна в ближайшее время`, 'info')
+  showNotification(`Регистрация через ${provider} будет доступна в ближайшее время`, 'info')
 }
 </script>
 
 <style scoped>
-/* ============================================
-   СТИЛИ ДЛЯ СТРАНИЦЫ РЕГИСТРАЦИИ
-   ============================================ */
-
 .auth-page {
   min-height: calc(100vh - 80px);
   background: var(--bg-primary);
@@ -292,7 +217,6 @@ const socialRegister = (provider) => {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-/* ===== ЛЕВАЯ ЧАСТЬ ===== */
 .auth-info {
   flex: 1;
   padding: 48px;
@@ -398,7 +322,6 @@ const socialRegister = (provider) => {
   color: #e0e0e0;
 }
 
-/* ===== ПРАВАЯ ЧАСТЬ ===== */
 .auth-form {
   flex: 1;
   padding: 48px;
@@ -425,11 +348,6 @@ const socialRegister = (provider) => {
   text-decoration: none;
 }
 
-.form-header a:hover {
-  text-decoration: underline;
-}
-
-/* ===== INPUTS ===== */
 .row {
   display: flex;
   gap: 16px;
@@ -462,7 +380,6 @@ const socialRegister = (provider) => {
   border-radius: 16px;
   color: white;
   font-size: 1rem;
-  transition: all var(--transition-normal);
 }
 
 .input-group input:focus {
@@ -487,7 +404,6 @@ const socialRegister = (provider) => {
   cursor: pointer;
 }
 
-/* ===== ИНДИКАТОР СЛОЖНОСТИ ПАРОЛЯ ===== */
 .password-strength {
   margin-bottom: 20px;
 }
@@ -510,7 +426,6 @@ const socialRegister = (provider) => {
   color: var(--text-muted);
 }
 
-/* ===== ЧЕКБОКС ===== */
 .form-options {
   margin-bottom: 24px;
 }
@@ -535,11 +450,6 @@ const socialRegister = (provider) => {
   text-decoration: none;
 }
 
-.checkbox a:hover {
-  text-decoration: underline;
-}
-
-/* ===== КНОПКА ОТПРАВКИ ===== */
 .btn-submit {
   width: 100%;
   padding: 14px;
@@ -564,115 +474,6 @@ const socialRegister = (provider) => {
   cursor: not-allowed;
 }
 
-/* ===== РАЗДЕЛИТЕЛЬ ===== */
 .divider {
   text-align: center;
-  margin-bottom: 24px;
-  position: relative;
-}
-
-.divider::before,
-.divider::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  width: calc(50% - 100px);
-  height: 1px;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.divider::before { left: 0; }
-.divider::after { right: 0; }
-
-.divider span {
-  background: var(--bg-secondary);
-  padding: 0 16px;
-  color: var(--text-muted);
-  font-size: 0.8rem;
-}
-
-/* ===== СОЦИАЛЬНЫЕ КНОПКИ ===== */
-.social-buttons {
-  display: flex;
-  gap: 12px;
-}
-
-.social-btn {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 12px;
-  background: transparent;
-  color: white;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-size: 0.9rem;
-}
-
-.social-btn:hover {
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--accent-primary);
-  transform: translateY(-2px);
-}
-
-/* ===== АДАПТАЦИЯ ===== */
-@media (max-width: 992px) {
-  .auth-container {
-    flex-direction: column;
-  }
-  
-  .auth-info {
-    padding: 32px;
-  }
-  
-  .stats {
-    display: none;
-  }
-  
-  .auth-form {
-    padding: 32px;
-  }
-}
-
-@media (max-width: 768px) {
-  .row {
-    flex-direction: column;
-    gap: 0;
-  }
-  
-  .form-header h2 {
-    font-size: 1.5rem;
-  }
-  
-  .social-buttons {
-    flex-wrap: wrap;
-  }
-  
-  .social-btn {
-    flex: auto;
-    min-width: calc(33.33% - 8px);
-  }
-}
-
-@media (max-width: 480px) {
-  .auth-page {
-    padding: 20px;
-  }
-  
-  .auth-form {
-    padding: 24px;
-  }
-  
-  .social-buttons {
-    flex-direction: column;
-  }
-  
-  .social-btn {
-    width: 100%;
-  }
-}
-</style>
+  margin-bottom: 
