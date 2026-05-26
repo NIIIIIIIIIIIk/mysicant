@@ -35,12 +35,24 @@
         <form @submit.prevent="handleLogin">
           <div class="input-group">
             <div class="input-icon"><i class="bi bi-envelope"></i></div>
-            <input type="email" v-model="email" placeholder="Email" required :class="{ 'error': emailError }">
+            <input 
+              type="email" 
+              v-model="email" 
+              placeholder="Email" 
+              required 
+              :class="{ 'error': emailError }"
+            >
           </div>
 
           <div class="input-group">
             <div class="input-icon"><i class="bi bi-lock"></i></div>
-            <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Пароль" required :class="{ 'error': passwordError }">
+            <input 
+              :type="showPassword ? 'text' : 'password'" 
+              v-model="password" 
+              placeholder="Пароль" 
+              required 
+              :class="{ 'error': passwordError }"
+            >
             <button type="button" class="password-toggle" @click="showPassword = !showPassword">
               <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
@@ -100,7 +112,7 @@ const handleLogin = async () => {
   passwordError.value = !password.value
   
   if (!email.value || !password.value) {
-    showNotification('Заполните все поля', 'warning')
+    showNotification('Пожалуйста, заполните все поля', 'warning')
     return
   }
   
@@ -139,8 +151,6 @@ const showForgotMessage = () => {
 </script>
 
 <style scoped>
-/* ===== СТИЛИ ДЛЯ СТРАНИЦЫ ВХОДА ===== */
-
 .auth-page {
   min-height: calc(100vh - 80px);
   background: var(--bg-primary);
@@ -160,7 +170,6 @@ const showForgotMessage = () => {
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-/* ===== ЛЕВАЯ ЧАСТЬ ===== */
 .auth-info {
   flex: 1;
   padding: 48px;
@@ -259,7 +268,6 @@ const showForgotMessage = () => {
   color: #ffcc00;
 }
 
-/* ===== ПРАВАЯ ЧАСТЬ ===== */
 .auth-form {
   flex: 1;
   padding: 48px;
@@ -286,11 +294,6 @@ const showForgotMessage = () => {
   text-decoration: none;
 }
 
-.form-header a:hover {
-  text-decoration: underline;
-}
-
-/* ===== INPUTS ===== */
 .input-group {
   position: relative;
   margin-bottom: 20px;
@@ -338,7 +341,6 @@ const showForgotMessage = () => {
   cursor: pointer;
 }
 
-/* ===== ФОРМА ===== */
 .form-options {
   display: flex;
   justify-content: space-between;
@@ -366,10 +368,6 @@ const showForgotMessage = () => {
   font-size: 0.9rem;
 }
 
-.forgot-link:hover {
-  text-decoration: underline;
-}
-
 .btn-submit {
   width: 100%;
   padding: 14px;
@@ -394,7 +392,6 @@ const showForgotMessage = () => {
   cursor: not-allowed;
 }
 
-/* ===== РАЗДЕЛИТЕЛЬ ===== */
 .divider {
   text-align: center;
   margin-bottom: 24px;
@@ -421,7 +418,6 @@ const showForgotMessage = () => {
   font-size: 0.8rem;
 }
 
-/* ===== СОЦИАЛЬНЫЕ КНОПКИ ===== */
 .social-buttons {
   display: flex;
   gap: 12px;
@@ -450,7 +446,6 @@ const showForgotMessage = () => {
   transform: translateY(-2px);
 }
 
-/* ===== ТЕСТОВЫЕ АККАУНТЫ ===== */
 .demo-accounts {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 24px;
@@ -498,20 +493,16 @@ const showForgotMessage = () => {
   transform: translateY(-2px);
 }
 
-/* ===== АДАПТАЦИЯ ===== */
 @media (max-width: 992px) {
   .auth-container {
     flex-direction: column;
   }
-  
   .auth-info {
     padding: 32px;
   }
-  
   .features-list {
     display: none;
   }
-  
   .auth-form {
     padding: 32px;
   }
@@ -521,11 +512,9 @@ const showForgotMessage = () => {
   .form-header h2 {
     font-size: 1.5rem;
   }
-  
   .social-buttons {
     flex-wrap: wrap;
   }
-  
   .demo-buttons {
     flex-direction: column;
   }
@@ -535,7 +524,6 @@ const showForgotMessage = () => {
   .auth-page {
     padding: 20px;
   }
-  
   .auth-form {
     padding: 24px;
   }
