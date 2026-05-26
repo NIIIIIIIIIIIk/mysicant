@@ -476,4 +476,97 @@ const socialRegister = (provider) => {
 
 .divider {
   text-align: center;
-  margin-bottom: 
+  margin-bottom: 24px;
+  position: relative;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: calc(50% - 100px);
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.divider span {
+  background: var(--bg-secondary);
+  padding: 0 16px;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+}
+
+.social-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-btn {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 992px) {
+  .auth-container {
+    flex-direction: column;
+  }
+  .auth-info {
+    padding: 32px;
+  }
+  .stats {
+    display: none;
+  }
+  .auth-form {
+    padding: 32px;
+  }
+}
+
+@media (max-width: 768px) {
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+  .form-header h2 {
+    font-size: 1.5rem;
+  }
+  .social-buttons {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 20px;
+  }
+  .auth-form {
+    padding: 24px;
+  }
+  .social-buttons {
+    flex-direction: column;
+  }
+  .social-btn {
+    width: 100%;
+  }
+}
+</style>
