@@ -172,6 +172,7 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { showNotification } from '../utils/notifications'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -224,22 +225,22 @@ const strengthColor = computed(() => {
 
 const handleRegister = async () => {
   if (password.value !== confirmPassword.value) {
-    alert('❌ Пароли не совпадают')
+    showNotification('❌ Пароли не совпадают', 'error')
     return
   }
   
   if (password.value.length < 6) {
-    alert('❌ Пароль должен содержать минимум 6 символов')
+    showNotification('❌ Пароль должен содержать минимум 6 символов', 'error')
     return
   }
   
   if (!agreeTerms.value) {
-    alert('❌ Необходимо согласиться с условиями использования')
+    showNotification('❌ Необходимо согласиться с условиями использования', 'error')
     return
   }
   
   if (!email.value.includes('@')) {
-    alert('❌ Введите корректный email')
+    showNotification('❌ Введите корректный email', 'error')
     return
   }
   
@@ -249,14 +250,15 @@ const handleRegister = async () => {
   loading.value = false
   
   if (success) {
+    showNotification('✅ Регистрация прошла успешно!', 'success')
     router.push('/profile')
   } else {
-    alert('❌ Ошибка регистрации. Попробуйте другой email.')
+    showNotification('❌ Ошибка регистрации. Попробуйте другой email.', 'error')
   }
 }
 
 const socialRegister = (provider) => {
-  alert(`🔐 Регистрация через ${provider} будет доступна в ближайшее время`)
+  showNotification(`🔐 Регистрация через ${provider} будет доступна в ближайшее время`, 'info')
 }
 </script>
 
@@ -293,7 +295,7 @@ const socialRegister = (provider) => {
 }
 
 .register-info {
-  background: linear-gradient(135deg, #2193b0, #6dd5ed);
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 }
 
 .music-notes {
@@ -308,7 +310,7 @@ const socialRegister = (provider) => {
 .note {
   position: absolute;
   font-size: 2rem;
-  color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.08);
   animation: floatNote 8s ease-in-out infinite;
 }
 
@@ -339,15 +341,28 @@ const socialRegister = (provider) => {
 
 .info-logo i {
   font-size: 2rem;
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.info-logo span {
+  background: linear-gradient(135deg, #fff, #ff3366);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .info-content h2 {
   font-size: 2rem;
   margin-bottom: 16px;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .info-content > p {
-  opacity: 0.9;
+  opacity: 0.95;
+  color: #f0f0f0;
+  font-weight: 500;
   margin-bottom: 32px;
   line-height: 1.5;
 }
@@ -369,11 +384,12 @@ const socialRegister = (provider) => {
   display: block;
   font-size: 1.5rem;
   font-weight: 700;
+  color: #ffcc00;
 }
 
 .stat-label {
   font-size: 0.8rem;
-  opacity: 0.8;
+  color: #e0e0e0;
 }
 
 /* ===== ПРАВАЯ ЧАСТЬ ===== */
@@ -435,8 +451,8 @@ const socialRegister = (provider) => {
 .input-group input {
   width: 100%;
   padding: 14px 16px 14px 48px;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   color: white;
   font-size: 1rem;
@@ -521,9 +537,9 @@ const socialRegister = (provider) => {
 .btn-submit {
   width: 100%;
   padding: 14px;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
   border: none;
-  border-radius: 16px;
+  border-radius: 40px;
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -534,7 +550,7 @@ const socialRegister = (provider) => {
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
 }
 
 .btn-submit:disabled {
