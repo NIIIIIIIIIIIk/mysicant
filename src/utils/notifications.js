@@ -1,15 +1,23 @@
-// Единая система уведомлений для всего приложения
+/**
+ * Единая система уведомлений для интернет-магазина музыкальных инструментов
+ * 
+ * Использование:
+ * import { showNotification } from '@/utils/notifications'
+ * showNotification('Сообщение', 'success')
+ * 
+ * Типы: success, error, warning, info
+ */
 
 /**
  * Показать уведомление
  * @param {string} message - Текст сообщения
- * @param {string} type - Тип: 'success', 'error', 'warning', 'info'
- * @param {number} duration - Длительность показа в мс (по умолчанию 4000)
+ * @param {string} type - Тип уведомления: 'success', 'error', 'warning', 'info'
+ * @param {number} duration - Длительность показа в миллисекундах (по умолчанию 4000)
  */
 export const showNotification = (message, type = 'info', duration = 4000) => {
-  // Удаляем старые уведомления
+  // Удаляем старые уведомления, чтобы не было кучи
   const oldNotifications = document.querySelectorAll('.custom-notification')
-  oldNotifications.forEach(n => n.remove())
+  oldNotifications.forEach(notification => notification.remove())
 
   // Создаём элемент уведомления
   const notification = document.createElement('div')
@@ -21,7 +29,7 @@ export const showNotification = (message, type = 'info', duration = 4000) => {
   notification.innerHTML = `
     <div class="notification-content">
       <i class="bi bi-${icon}"></i>
-      <span>${message}</span>
+      <span>${escapeHtml(message)}</span>
       <button class="notification-close">&times;</button>
     </div>
   `
@@ -64,25 +72,48 @@ const getIcon = (type) => {
 }
 
 /**
- * Показать успешное уведомление
- * @param {string} message 
+ * Экранирование HTML-символов для безопасности
+ * @param {string} str 
+ * @returns {string}
  */
-export const showSuccess = (message) => showNotification(message, 'success')
+const escapeHtml = (str) => {
+  if (!str) return ''
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+}
 
 /**
- * Показать ошибку
+ * Показать уведомление об успехе
  * @param {string} message 
  */
-export const showError = (message) => showNotification(message, 'error')
+export const showSuccess = (message) => {
+  showNotification(message, 'success')
+}
+
+/**
+ * Показать уведомление об ошибке
+ * @param {string} message 
+ */
+export const showError = (message) => {
+  showNotification(message, 'error')
+}
 
 /**
  * Показать предупреждение
  * @param {string} message 
  */
-export const showWarning = (message) => showNotification(message, 'warning')
+export const showWarning = (message) => {
+  showNotification(message, 'warning')
+}
 
 /**
  * Показать информационное сообщение
  * @param {string} message 
  */
-export const showInfo = (message) => showNotification(message, 'info')
+export const showInfo = (message) => {
+  showNotification(message, 'info')
+}
