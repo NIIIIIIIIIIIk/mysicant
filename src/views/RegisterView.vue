@@ -245,4 +245,192 @@ const socialRegister = (provider) => {
 
 .info-content {
   position: relative;
-  z
+  z-index: 1;
+  color: white;
+}
+
+.info-content h2 {
+  font-size: 2rem;
+  margin-bottom: 16px;
+}
+
+.info-content p {
+  opacity: 0.8;
+}
+
+.auth-form {
+  flex: 1;
+  padding: 48px;
+  background: var(--bg-secondary);
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.form-header h2 {
+  font-size: 1.8rem;
+  color: white;
+  margin-bottom: 8px;
+}
+
+.form-header a {
+  color: #ff3366;
+  text-decoration: none;
+}
+
+.row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.col-6 {
+  flex: 1;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.input-group i {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  z-index: 1;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 16px 14px 48px;
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+  font-size: 1rem;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #ff3366;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #888;
+  cursor: pointer;
+}
+
+.password-strength {
+  margin-bottom: 20px;
+}
+
+.strength-bar {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.strength-fill {
+  height: 100%;
+  background: #ffcc00;
+  transition: width 0.3s;
+}
+
+.password-strength span {
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.form-options {
+  margin-bottom: 24px;
+  color: #888;
+}
+
+.form-options input {
+  margin-right: 8px;
+}
+
+.btn-submit {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
+  border: none;
+  border-radius: 40px;
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 24px;
+}
+
+.btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid white;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.social-buttons {
+  display: flex;
+  gap: 12px;
+}
+
+.social-btn {
+  flex: 1;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.social-btn:hover {
+  background: rgba(255, 51, 102, 0.15);
+  border-color: #ff3366;
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    flex-direction: column;
+  }
+  .auth-info {
+    padding: 32px;
+  }
+  .auth-form {
+    padding: 32px;
+  }
+  .row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+</style>
