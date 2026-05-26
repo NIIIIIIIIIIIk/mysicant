@@ -12,10 +12,10 @@
           </div>
           <div class="info-logo">
             <i class="bi bi-music-note-beamed"></i>
-            <span>Music Store</span>
+            <span>Вход в аккаунт</span>
           </div>
           <h2>Добро пожаловать!</h2>
-          <p>Войдите в свой аккаунт, чтобы продолжить покупки</p>
+          <p>Войдите, чтобы продолжить покупки</p>
           <div class="features-list">
             <div class="feature"><i class="bi bi-check-circle-fill"></i><span>Быстрое оформление заказов</span></div>
             <div class="feature"><i class="bi bi-check-circle-fill"></i><span>История покупок</span></div>
@@ -39,8 +39,7 @@
               type="email" 
               v-model="email" 
               placeholder="Email" 
-              required 
-              :class="{ 'error': emailError }"
+              required
             >
           </div>
 
@@ -50,8 +49,7 @@
               :type="showPassword ? 'text' : 'password'" 
               v-model="password" 
               placeholder="Пароль" 
-              required 
-              :class="{ 'error': passwordError }"
+              required
             >
             <button type="button" class="password-toggle" @click="showPassword = !showPassword">
               <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
@@ -103,16 +101,16 @@ const password = ref('')
 const rememberMe = ref(false)
 const showPassword = ref(false)
 const loading = ref(false)
-const emailError = ref(false)
-const passwordError = ref(false)
 
 const handleLogin = async () => {
-  // Валидация полей
-  emailError.value = !email.value
-  passwordError.value = !password.value
+  // Проверка на пустые поля
+  if (!email.value || email.value.trim() === '') {
+    showNotification('Введите email', 'warning')
+    return
+  }
   
-  if (!email.value || !password.value) {
-    showNotification('Пожалуйста, заполните все поля', 'warning')
+  if (!password.value || password.value.trim() === '') {
+    showNotification('Введите пароль', 'warning')
     return
   }
   
@@ -136,8 +134,6 @@ const handleLogin = async () => {
 const fillDemo = (demoEmail, demoPassword) => {
   email.value = demoEmail
   password.value = demoPassword
-  emailError.value = false
-  passwordError.value = false
   showNotification('Тестовые данные вставлены', 'info')
 }
 
@@ -323,11 +319,6 @@ const showForgotMessage = () => {
   outline: none;
   border-color: var(--accent-primary);
   box-shadow: 0 0 0 3px rgba(255, 51, 102, 0.1);
-}
-
-.input-group input.error {
-  border-color: #ff4444;
-  background: rgba(255, 68, 68, 0.05);
 }
 
 .password-toggle {
