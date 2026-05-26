@@ -2,7 +2,7 @@
   <div class="auth-page">
     <div class="auth-container">
       <!-- Левая часть с информацией -->
-      <div class="auth-info">
+      <div class="auth-info login-info">
         <div class="info-content">
           <div class="music-notes">
             <span class="note">♪</span>
@@ -15,24 +15,12 @@
             <span>Music Store</span>
           </div>
           <h2>Добро пожаловать!</h2>
-          <p>Войдите в свой аккаунт, чтобы продолжить покупки и управлять заказами</p>
+          <p>Войдите в свой аккаунт, чтобы продолжить покупки</p>
           <div class="features-list">
-            <div class="feature">
-              <i class="bi bi-check-circle-fill"></i>
-              <span>Быстрое оформление заказов</span>
-            </div>
-            <div class="feature">
-              <i class="bi bi-check-circle-fill"></i>
-              <span>История покупок</span>
-            </div>
-            <div class="feature">
-              <i class="bi bi-check-circle-fill"></i>
-              <span>Избранные товары</span>
-            </div>
-            <div class="feature">
-              <i class="bi bi-check-circle-fill"></i>
-              <span>Персональные скидки</span>
-            </div>
+            <div class="feature"><i class="bi bi-check-circle-fill"></i><span>Быстрое оформление заказов</span></div>
+            <div class="feature"><i class="bi bi-check-circle-fill"></i><span>История покупок</span></div>
+            <div class="feature"><i class="bi bi-check-circle-fill"></i><span>Избранные товары</span></div>
+            <div class="feature"><i class="bi bi-check-circle-fill"></i><span>Персональные скидки</span></div>
           </div>
         </div>
       </div>
@@ -46,40 +34,21 @@
 
         <form @submit.prevent="handleLogin">
           <div class="input-group">
-            <div class="input-icon">
-              <i class="bi bi-envelope"></i>
-            </div>
-            <input
-              type="email"
-              v-model="email"
-              placeholder="Email"
-              required
-              :class="{ 'error': emailError }"
-            >
+            <div class="input-icon"><i class="bi bi-envelope"></i></div>
+            <input type="email" v-model="email" placeholder="Email" required :class="{ 'error': emailError }">
           </div>
 
           <div class="input-group">
-            <div class="input-icon">
-              <i class="bi bi-lock"></i>
-            </div>
-            <input
-              :type="showPassword ? 'text' : 'password'"
-              v-model="password"
-              placeholder="Пароль"
-              required
-              :class="{ 'error': passwordError }"
-            >
+            <div class="input-icon"><i class="bi bi-lock"></i></div>
+            <input :type="showPassword ? 'text' : 'password'" v-model="password" placeholder="Пароль" required :class="{ 'error': passwordError }">
             <button type="button" class="password-toggle" @click="showPassword = !showPassword">
               <i :class="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
             </button>
           </div>
 
           <div class="form-options">
-            <label class="checkbox">
-              <input type="checkbox" v-model="rememberMe">
-              <span>Запомнить меня</span>
-            </label>
-            <a href="#" class="forgot-link" @click.prevent="alert('Восстановление пароля: обратитесь к администратору')">Забыли пароль?</a>
+            <label class="checkbox"><input type="checkbox" v-model="rememberMe"><span>Запомнить меня</span></label>
+            <a href="#" class="forgot-link" @click.prevent="showForgotMessage">Забыли пароль?</a>
           </div>
 
           <button type="submit" class="btn-submit" :disabled="loading">
@@ -87,32 +56,20 @@
             <span v-else><i class="bi bi-box-arrow-in-right"></i> Войти</span>
           </button>
 
-          <div class="divider">
-            <span>или войдите с помощью</span>
-          </div>
+          <div class="divider"><span>или войдите с помощью</span></div>
 
           <div class="social-buttons">
-            <button type="button" class="social-btn google" @click="socialLogin('google')">
-              <i class="bi bi-google"></i> Google
-            </button>
-            <button type="button" class="social-btn vk" @click="socialLogin('vk')">
-              <i class="bi bi-vk"></i> VK
-            </button>
-            <button type="button" class="social-btn github" @click="socialLogin('github')">
-              <i class="bi bi-github"></i> GitHub
-            </button>
+            <button type="button" class="social-btn google" @click="socialLogin('google')"><i class="bi bi-google"></i> Google</button>
+            <button type="button" class="social-btn vk" @click="socialLogin('vk')"><i class="bi bi-vk"></i> VK</button>
+            <button type="button" class="social-btn github" @click="socialLogin('github')"><i class="bi bi-github"></i> GitHub</button>
           </div>
         </form>
 
         <div class="demo-accounts">
           <p class="demo-title">🍪 Тестовые аккаунты</p>
           <div class="demo-buttons">
-            <button class="demo-btn admin" @click="fillDemo('admin@musicstore.ru', 'admin123')">
-              <i class="bi bi-shield-lock"></i> Администратор
-            </button>
-            <button class="demo-btn user" @click="fillDemo('user@example.com', 'user123')">
-              <i class="bi bi-person"></i> Пользователь
-            </button>
+            <button class="demo-btn admin" @click="fillDemo('admin@musicstore.ru', 'admin123')"><i class="bi bi-shield-lock"></i> Администратор</button>
+            <button class="demo-btn user" @click="fillDemo('user@example.com', 'user123')"><i class="bi bi-person"></i> Пользователь</button>
           </div>
         </div>
       </div>
@@ -124,6 +81,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { showNotification } from '../utils/notifications'
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -137,8 +95,12 @@ const emailError = ref(false)
 const passwordError = ref(false)
 
 const handleLogin = async () => {
+  // Валидация полей
+  emailError.value = !email.value
+  passwordError.value = !password.value
+  
   if (!email.value || !password.value) {
-    alert('Заполните все поля')
+    showNotification('Заполните все поля', 'warning')
     return
   }
   
@@ -147,7 +109,7 @@ const handleLogin = async () => {
   loading.value = false
   
   if (success) {
-    // Проверяем роль пользователя
+    showNotification('Добро пожаловать!', 'success')
     const userRole = localStorage.getItem('userRole')
     if (userRole === 'admin') {
       router.push('/admin')
@@ -155,7 +117,7 @@ const handleLogin = async () => {
       router.push('/profile')
     }
   } else {
-    alert('Неверный email или пароль')
+    showNotification('Неверный email или пароль', 'error')
   }
 }
 
@@ -164,14 +126,21 @@ const fillDemo = (demoEmail, demoPassword) => {
   password.value = demoPassword
   emailError.value = false
   passwordError.value = false
+  showNotification('Тестовые данные вставлены', 'info')
 }
 
 const socialLogin = (provider) => {
-  alert(`Авторизация через ${provider} будет доступна в ближайшее время`)
+  showNotification(`Авторизация через ${provider} будет доступна позже`, 'info')
+}
+
+const showForgotMessage = () => {
+  showNotification('Для восстановления пароля обратитесь к администратору', 'info')
 }
 </script>
 
 <style scoped>
+/* ===== СТИЛИ ДЛЯ СТРАНИЦЫ ВХОДА ===== */
+
 .auth-page {
   min-height: calc(100vh - 80px);
   background: var(--bg-primary);
@@ -188,16 +157,19 @@ const socialLogin = (provider) => {
   background: var(--bg-card);
   border-radius: 32px;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
 }
 
-/* Левая часть */
+/* ===== ЛЕВАЯ ЧАСТЬ ===== */
 .auth-info {
   flex: 1;
-  background: linear-gradient(135deg, #ff3366, #ff6b3d);
   padding: 48px;
   position: relative;
   overflow: hidden;
+}
+
+.login-info {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 }
 
 .music-notes {
@@ -212,7 +184,7 @@ const socialLogin = (provider) => {
 .note {
   position: absolute;
   font-size: 2rem;
-  color: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.08);
   animation: floatNote 8s ease-in-out infinite;
 }
 
@@ -243,15 +215,28 @@ const socialLogin = (provider) => {
 
 .info-logo i {
   font-size: 2rem;
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.info-logo span {
+  background: linear-gradient(135deg, #fff, #ff3366);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .info-content h2 {
   font-size: 2rem;
   margin-bottom: 16px;
+  color: #ffffff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .info-content > p {
-  opacity: 0.9;
+  opacity: 0.95;
+  color: #f0f0f0;
+  font-weight: 500;
   margin-bottom: 32px;
   line-height: 1.5;
 }
@@ -266,13 +251,15 @@ const socialLogin = (provider) => {
   display: flex;
   align-items: center;
   gap: 12px;
+  color: #e0e0e0;
 }
 
 .feature i {
   font-size: 1.2rem;
+  color: #ffcc00;
 }
 
-/* Правая часть */
+/* ===== ПРАВАЯ ЧАСТЬ ===== */
 .auth-form {
   flex: 1;
   padding: 48px;
@@ -299,7 +286,11 @@ const socialLogin = (provider) => {
   text-decoration: none;
 }
 
-/* Input groups */
+.form-header a:hover {
+  text-decoration: underline;
+}
+
+/* ===== INPUTS ===== */
 .input-group {
   position: relative;
   margin-bottom: 20px;
@@ -317,8 +308,8 @@ const socialLogin = (provider) => {
 .input-group input {
   width: 100%;
   padding: 14px 16px 14px 48px;
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--bg-elevated);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 16px;
   color: white;
   font-size: 1rem;
@@ -333,6 +324,7 @@ const socialLogin = (provider) => {
 
 .input-group input.error {
   border-color: #ff4444;
+  background: rgba(255, 68, 68, 0.05);
 }
 
 .password-toggle {
@@ -346,6 +338,7 @@ const socialLogin = (provider) => {
   cursor: pointer;
 }
 
+/* ===== ФОРМА ===== */
 .form-options {
   display: flex;
   justify-content: space-between;
@@ -373,12 +366,16 @@ const socialLogin = (provider) => {
   font-size: 0.9rem;
 }
 
+.forgot-link:hover {
+  text-decoration: underline;
+}
+
 .btn-submit {
   width: 100%;
   padding: 14px;
-  background: var(--gradient-primary);
+  background: linear-gradient(135deg, #ff3366, #ff6b3d);
   border: none;
-  border-radius: 16px;
+  border-radius: 40px;
   color: white;
   font-size: 1rem;
   font-weight: 600;
@@ -389,7 +386,7 @@ const socialLogin = (provider) => {
 
 .btn-submit:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 0 20px rgba(255, 51, 102, 0.3);
 }
 
 .btn-submit:disabled {
@@ -397,7 +394,7 @@ const socialLogin = (provider) => {
   cursor: not-allowed;
 }
 
-/* Разделитель */
+/* ===== РАЗДЕЛИТЕЛЬ ===== */
 .divider {
   text-align: center;
   margin-bottom: 24px;
@@ -409,7 +406,7 @@ const socialLogin = (provider) => {
   content: '';
   position: absolute;
   top: 50%;
-  width: calc(50% - 80px);
+  width: calc(50% - 100px);
   height: 1px;
   background: rgba(255, 255, 255, 0.1);
 }
@@ -424,7 +421,7 @@ const socialLogin = (provider) => {
   font-size: 0.8rem;
 }
 
-/* Социальные кнопки */
+/* ===== СОЦИАЛЬНЫЕ КНОПКИ ===== */
 .social-buttons {
   display: flex;
   gap: 12px;
@@ -444,14 +441,16 @@ const socialLogin = (provider) => {
   align-items: center;
   justify-content: center;
   gap: 8px;
+  font-size: 0.9rem;
 }
 
 .social-btn:hover {
   background: rgba(255, 255, 255, 0.05);
   border-color: var(--accent-primary);
+  transform: translateY(-2px);
 }
 
-/* Тестовые аккаунты */
+/* ===== ТЕСТОВЫЕ АККАУНТЫ ===== */
 .demo-accounts {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   padding-top: 24px;
@@ -499,8 +498,8 @@ const socialLogin = (provider) => {
   transform: translateY(-2px);
 }
 
-/* Адаптация */
-@media (max-width: 768px) {
+/* ===== АДАПТАЦИЯ ===== */
+@media (max-width: 992px) {
   .auth-container {
     flex-direction: column;
   }
@@ -509,20 +508,18 @@ const socialLogin = (provider) => {
     padding: 32px;
   }
   
+  .features-list {
+    display: none;
+  }
+  
   .auth-form {
     padding: 32px;
   }
-  
-  .info-logo {
-    margin-bottom: 24px;
-  }
-  
-  .info-content h2 {
+}
+
+@media (max-width: 768px) {
+  .form-header h2 {
     font-size: 1.5rem;
-  }
-  
-  .features-list {
-    display: none;
   }
   
   .social-buttons {
@@ -531,6 +528,16 @@ const socialLogin = (provider) => {
   
   .demo-buttons {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-page {
+    padding: 20px;
+  }
+  
+  .auth-form {
+    padding: 24px;
   }
 }
 </style>
