@@ -9,22 +9,6 @@
       </div>
     </section>
 
-    <!-- Категории -->
-    <section class="categories">
-      <div class="container">
-        <h2 class="section-title">Категории</h2>
-        <div class="categories-grid">
-          <div v-for="cat in categories" :key="cat.id" class="category-card" @click="goToCategory(cat.slug)">
-            <img :src="cat.image" :alt="cat.name">
-            <div class="category-info">
-              <h3>{{ cat.name }}</h3>
-              <p>{{ cat.count }} товаров</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- Хиты продаж -->
     <section class="featured">
       <div class="container">
@@ -58,13 +42,6 @@ const cartStore = useCartStore()
 
 const featuredProducts = ref(products.slice(0, 4))
 
-const categories = ref([
-  { id: 1, name: 'Гитары', slug: 'guitar', count: 24, image: 'https://images.unsplash.com/photo-1525201548942-d8732f6617a0?w=400' },
-  { id: 2, name: 'Клавишные', slug: 'piano', count: 18, image: 'https://images.unsplash.com/photo-1520523839897-bd0b52f945a0?w=400' },
-  { id: 3, name: 'Ударные', slug: 'drums', count: 12, image: 'https://images.unsplash.com/photo-1519892300165-cb5542fb47c7?w=400' },
-  { id: 4, name: 'Аксессуары', slug: 'accessories', count: 36, image: 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=400' }
-])
-
 const formatPrice = (price) => {
   return price.toLocaleString('ru-RU') + ' ₽'
 }
@@ -73,15 +50,12 @@ const addToCart = (product) => {
   cartStore.addItem(product)
   showNotification('Товар добавлен в корзину', 'success')
 }
-
-const goToCategory = (slug) => {
-  router.push(`/catalog?category=${slug}`)
-}
 </script>
 
 <style scoped>
 .home {
   background: var(--bg-primary);
+  min-height: calc(100vh - 200px);
 }
 
 .hero {
@@ -123,35 +97,6 @@ const goToCategory = (slug) => {
   font-size: 2rem;
   color: white;
   margin-bottom: 40px;
-}
-
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.category-card {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.category-card img {
-  width: 100%;
-  height: 200px;
-  object-fit: cover;
-}
-
-.category-info {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 20px;
-  background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-  color: white;
 }
 
 .products-grid {
@@ -202,7 +147,7 @@ const goToCategory = (slug) => {
     font-size: 1.8rem;
   }
   
-  .categories-grid, .products-grid {
+  .products-grid {
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   }
 }
