@@ -421,3 +421,73 @@ label {
   border-left-color: #44ccff;
   background: linear-gradient(135deg, #1a2a2e, #0a151a);
 }
+
+/* ===== ЕДИНЫЕ УВЕДОМЛЕНИЯ ===== */
+.custom-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  min-width: 320px;
+  max-width: 450px;
+  background: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  transform: translateX(400px);
+  transition: transform 0.3s ease;
+  border-left: 4px solid;
+}
+
+.custom-notification.show {
+  transform: translateX(0);
+}
+
+.notification-content {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  color: white;
+}
+
+.notification-content i {
+  font-size: 1.4rem;
+}
+
+.notification-content span {
+  flex: 1;
+  font-size: 0.9rem;
+}
+
+.notification-close {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+
+.notification-close:hover {
+  color: white;
+}
+
+.custom-notification-success {
+  border-left-color: #44cc44;
+  background: linear-gradient(135deg, #1a2e1a, #0a1a0a);
+}
+
+.custom-notification-error {
+  border-left-color: #ff4444;
+  background: linear-gradient(135deg, #2e1a1a, #1a0a0a);
+}
+
+.custom-notification-warning {
+  border-left-color: #ffcc00;
+  background: linear-gradient(135deg, #2e2a1a, #1a150a);
+}
+
+.custom-notification-info {
+  border-left-color: #44ccff;
+  background: linear-gradient(135deg, #1a2a2e, #0a151a);
+}
