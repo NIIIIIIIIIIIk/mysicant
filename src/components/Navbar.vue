@@ -1,18 +1,18 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark">
-    <div class="container-fluid">
+  <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <div class="container">
       <!-- Логотип -->
       <router-link to="/" class="navbar-brand">
         <i class="bi bi-music-note-beamed"></i>
         <span>Интернет-магазин</span>
       </router-link>
 
-      <!-- Кнопка бургер-меню для мобильных -->
+      <!-- Кнопка бургер-меню -->
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Основное меню -->
+      <!-- Меню -->
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
@@ -28,32 +28,24 @@
             </router-link>
           </li>
           
-          <!-- Не авторизован -->
-          <template v-if="!authStore.isAuthenticated">
-            <li class="nav-item">
-              <router-link to="/login" class="nav-link btn-login">Вход</router-link>
-            </li>
-            <li class="nav-item">
-              <router-link to="/register" class="nav-link btn-register">Регистрация</router-link>
-            </li>
-          </template>
+          <li v-if="!authStore.isAuthenticated" class="nav-item">
+            <router-link to="/login" class="nav-link btn-login">Вход</router-link>
+          </li>
+          <li v-if="!authStore.isAuthenticated" class="nav-item">
+            <router-link to="/register" class="nav-link btn-register">Регистрация</router-link>
+          </li>
 
-          <!-- Авторизован -->
-          <template v-else>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                <i class="bi bi-person-circle"></i> {{ authStore.userName }}
-              </a>
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li v-if="authStore.isAdmin">
-                  <router-link to="/admin" class="dropdown-item">Админ-панель</router-link>
-                </li>
-                <li><router-link to="/profile" class="dropdown-item">Профиль</router-link></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item text-danger" href="#" @click.prevent="logout">Выйти</a></li>
-              </ul>
-            </li>
-          </template>
+          <li v-if="authStore.isAuthenticated" class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              <i class="bi bi-person-circle"></i> {{ authStore.userName }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li v-if="authStore.isAdmin"><router-link to="/admin" class="dropdown-item">Админ-панель</router-link></li>
+              <li><router-link to="/profile" class="dropdown-item">Профиль</router-link></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item text-danger" href="#" @click.prevent="logout">Выйти</a></li>
+            </ul>
+          </li>
         </ul>
       </div>
     </div>
@@ -82,13 +74,14 @@ const logout = async () => {
 .navbar {
   background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  padding: 1rem 0;
+  padding: 0.8rem 0;
 }
 
-.container-fluid {
+.container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 20px;
+  width: 100%;
 }
 
 .navbar-brand {
@@ -105,6 +98,10 @@ const logout = async () => {
   color: #ff3366;
 }
 
+.navbar-nav {
+  gap: 4px;
+}
+
 .nav-link {
   color: rgba(255, 255, 255, 0.8) !important;
   transition: all 0.3s ease;
@@ -115,15 +112,14 @@ const logout = async () => {
   color: #ff3366 !important;
 }
 
-.nav-link.router-link-active {
-  color: #ff3366 !important;
+/* Кнопки */
+.btn-login, .btn-register {
+  border-radius: 30px !important;
+  padding: 0.5rem 1.2rem !important;
 }
 
-/* Кнопки входа и регистрации */
 .btn-login {
   background: rgba(255, 51, 102, 0.15);
-  border-radius: 30px !important;
-  margin-left: 8px;
   border: 1px solid rgba(255, 51, 102, 0.3);
 }
 
@@ -134,8 +130,6 @@ const logout = async () => {
 
 .btn-register {
   background: linear-gradient(135deg, #ff3366, #ff6b3d);
-  border-radius: 30px !important;
-  margin-left: 8px;
   color: white !important;
 }
 
@@ -147,8 +141,8 @@ const logout = async () => {
 /* Бейдж корзины */
 .cart-badge {
   position: absolute;
-  top: -8px;
-  right: -8px;
+  top: -5px;
+  right: -10px;
   background: #ff3366;
   color: white;
   border-radius: 50%;
@@ -165,7 +159,6 @@ const logout = async () => {
   background: #1a1a2e;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
-  margin-top: 8px;
 }
 
 .dropdown-item {
@@ -183,19 +176,26 @@ const logout = async () => {
   background: rgba(255, 255, 255, 0.1);
 }
 
-/* Адаптация для мобильных */
+/* Адаптация */
 @media (max-width: 992px) {
   .navbar-nav {
-    padding: 1rem 0;
+    margin-top: 1rem;
   }
   
   .btn-login, .btn-register {
     margin: 4px 0;
     text-align: center;
+    display: inline-block;
+    width: auto;
   }
   
-  .container-fluid {
-    padding: 0 16px;
+  .dropdown-menu {
+    background: transparent;
+    padding-left: 1rem;
+  }
+  
+  .dropdown-item {
+    color: rgba(255, 255, 255, 0.7);
   }
 }
 </style>
