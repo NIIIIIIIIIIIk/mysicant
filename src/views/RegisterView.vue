@@ -224,23 +224,29 @@ const strengthColor = computed(() => {
 })
 
 const handleRegister = async () => {
+  // Валидация полей
+  if (!firstName.value || !lastName.value || !email.value || !password.value) {
+    showNotification('Заполните все обязательные поля', 'warning')
+    return
+  }
+  
   if (password.value !== confirmPassword.value) {
-    showNotification('❌ Пароли не совпадают', 'error')
+    showNotification('Пароли не совпадают', 'error')
     return
   }
   
   if (password.value.length < 6) {
-    showNotification('❌ Пароль должен содержать минимум 6 символов', 'error')
+    showNotification('Пароль должен содержать минимум 6 символов', 'error')
     return
   }
   
   if (!agreeTerms.value) {
-    showNotification('❌ Необходимо согласиться с условиями использования', 'error')
+    showNotification('Необходимо согласиться с условиями использования', 'error')
     return
   }
   
   if (!email.value.includes('@')) {
-    showNotification('❌ Введите корректный email', 'error')
+    showNotification('Введите корректный email', 'error')
     return
   }
   
@@ -250,10 +256,10 @@ const handleRegister = async () => {
   loading.value = false
   
   if (success) {
-    showNotification('✅ Регистрация прошла успешно!', 'success')
+    showNotification('Регистрация прошла успешно!', 'success')
     router.push('/profile')
   } else {
-    showNotification('❌ Ошибка регистрации. Попробуйте другой email.', 'error')
+    showNotification('Ошибка регистрации. Попробуйте другой email.', 'error')
   }
 }
 
