@@ -1,44 +1,41 @@
 <template>
-  <footer class="site-footer">
+  <footer class="footer">
     <div class="footer-container">
-      <div class="footer-left">
-        <i class="bi bi-music-note-beamed"></i>
-        <span>Music Store</span>
-        <span class="separator">|</span>
-        <span>© 2026</span>
-      </div>
-      
-      <div class="footer-center">
-        <router-link to="/">Главная</router-link>
-        <router-link to="/catalog">Каталог</router-link>
-        <router-link to="/contacts">Контакты</router-link>
-      </div>
-      
-      <div class="footer-right">
-        <a href="#" class="social"><i class="bi bi-vk"></i></a>
-        <a href="#" class="social"><i class="bi bi-telegram"></i></a>
-        <a href="#" class="social"><i class="bi bi-instagram"></i></a>
+      <div class="footer-content">
+        <div class="footer-info">
+          <span>© 2026 Интернет-магазин музыкальных инструментов</span>
+        </div>
+        <div class="footer-links">
+          <a href="#" class="social-link" @click.prevent="openMessenger">
+            <i class="bi bi-telegram"></i>
+            <span>Написать в Telegram</span>
+          </a>
+        </div>
       </div>
     </div>
   </footer>
 </template>
 
 <script setup>
-// Нет сложной логики
+const openMessenger = () => {
+  window.open('https://t.me/max', '_blank')
+}
 </script>
 
 <style scoped>
-.site-footer {
+.footer {
   background: #0a0a0a;
   border-top: 1px solid #2a2a3a;
-  padding: 12px 24px;
-  width: 100%;
+  padding: 20px;
   margin-top: 40px;
 }
 
 .footer-container {
   max-width: 1400px;
   margin: 0 auto;
+}
+
+.footer-content {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -46,72 +43,28 @@
   gap: 16px;
 }
 
-.footer-left {
+.footer-info {
+  color: #888;
+  font-size: 0.8rem;
+}
+
+.social-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 14px;
-  color: #888;
-}
-
-.footer-left i {
-  color: #ff3366;
-  font-size: 16px;
-}
-
-.separator {
-  color: #333;
-}
-
-.footer-center {
-  display: flex;
-  gap: 24px;
-}
-
-.footer-center a {
   color: #888;
   text-decoration: none;
-  font-size: 13px;
   transition: color 0.2s;
 }
 
-.footer-center a:hover {
+.social-link:hover {
   color: #ff3366;
 }
 
-.footer-right {
-  display: flex;
-  gap: 12px;
-}
-
-.social {
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 50%;
-  color: #888;
-  text-decoration: none;
-  transition: all 0.2s;
-}
-
-.social:hover {
-  background: #ff3366;
-  color: white;
-  transform: translateY(-2px);
-}
-
 @media (max-width: 768px) {
-  .footer-container {
+  .footer-content {
     flex-direction: column;
     text-align: center;
-  }
-  
-  .footer-center {
-    flex-wrap: wrap;
-    justify-content: center;
   }
 }
 </style>
