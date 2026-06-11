@@ -7,8 +7,8 @@
         </div>
         <div class="footer-links">
           <a href="#" class="social-link" @click.prevent="openMessenger">
-            <i class="bi bi-telegram"></i>
-            <span>Написать в Telegram</span>
+            <i class="bi bi-whatsapp"></i>
+            <span>Написать в Мессенджер Макс</span>
           </a>
         </div>
       </div>
@@ -18,7 +18,8 @@
 
 <script setup>
 const openMessenger = () => {
-  window.open('https://t.me/max', '_blank')
+  // Ссылка на Мессенджер Макс (WhatsApp)
+  window.open('https://wa.me/79991234567', '_blank')
 }
 </script>
 
@@ -58,7 +59,7 @@ const openMessenger = () => {
 }
 
 .social-link:hover {
-  color: #ff3366;
+  color: #25D366;
 }
 
 @media (max-width: 768px) {
