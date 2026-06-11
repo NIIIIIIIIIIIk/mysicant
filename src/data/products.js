@@ -10,6 +10,7 @@ export const products = [
     category: 'guitar',
     badge: 'Хит',
     badgeClass: 'hot',
+    stock: 5,
     image: 'https://n.cdn.cdek.shopping/images/shopping/afc5742f8ee44108907550754c9aa294.jpg?v=1'
   },
   {
@@ -22,6 +23,7 @@ export const products = [
     category: 'guitar',
     badge: 'Новинка',
     badgeClass: 'new',
+    stock: 10,
     image: 'https://thumbs.static-thomann.de/thumb/padthumb600x600/pics/bdb/_46/467751/19401906_800.jpg'
   },
   {
@@ -35,6 +37,7 @@ export const products = [
     category: 'piano',
     badge: '-15%',
     badgeClass: 'sale',
+    stock: 3,
     image: 'https://avatars.mds.yandex.net/i?id=07e675ce397eb0048316e3ed9adf7a81_l-6612593-images-thumbs&n=13'
   },
   {
@@ -45,6 +48,7 @@ export const products = [
     rating: 4.8,
     reviews: 56,
     category: 'drums',
+    stock: 2,
     image: 'https://avatars.mds.yandex.net/i?id=29c8f1a2f0a848b92d54fb2e59e2c97b_sr-5347559-images-thumbs&n=13'
   },
   {
@@ -58,6 +62,7 @@ export const products = [
     category: 'guitar',
     badge: 'Топ',
     badgeClass: 'hot',
+    stock: 4,
     image: 'https://i.ebayimg.com/images/g/3dEAAOSwaL5nxKlc/s-l1600.jpg'
   },
   {
@@ -68,6 +73,7 @@ export const products = [
     rating: 4.7,
     reviews: 78,
     category: 'guitar',
+    stock: 7,
     image: 'https://www.woodstockguitars.dk/wp-content/uploads/2024/09/Ibanez_RG550-BK_Black_2.jpg'
   }
 ]
